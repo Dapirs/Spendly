@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "id": "9a620145-bf5c-4b73-a12a-f5246c53e0f9",
+    "description": "Mobile",
+    "amount": 6543,
+    "category": "Shopping",
+    "date": "2026-04-20"
+  }
+]
