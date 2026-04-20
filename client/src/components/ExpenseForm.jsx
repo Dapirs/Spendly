@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
-
 const EMPTY = { description: '', amount: '', category: 'Food', date: '' };
 
 const ExpenseForm = ({ onAdd }) => {
@@ -18,63 +17,74 @@ const ExpenseForm = ({ onAdd }) => {
   };
 
   return (
-    <form className="expense-form" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="description">Description</label>
-        <input
-          id="description"
-          name="description"
-          type="text"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="e.g. Groceries"
-          required
-        />
-      </div>
+    <div className="expense-form-wrap">
+      <form className="expense-form" onSubmit={handleSubmit}>
 
-      <div className="form-group">
-        <label htmlFor="amount">Amount</label>
-        <input
-          id="amount"
-          name="amount"
-          type="number"
-          min="0.01"
-          step="0.01"
-          value={form.amount}
-          onChange={handleChange}
-          placeholder="0.00"
-          required
-        />
-      </div>
+        {/* Row 1 — Description */}
+        <div className="field field--description">
+          <label htmlFor="description">What did you spend on?</label>
+          <input
+            id="description"
+            name="description"
+            type="text"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="e.g. Swiggy order, Uber ride…"
+            autoComplete="off"
+            required
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-        >
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
-      </div>
+        {/* Row 2 — Amount / Category / Date */}
+        <div className="form-row">
+          <div className="field field--amount">
+            <label htmlFor="amount">Amount</label>
+            <span className="amount-prefix">₹</span>
+            <input
+              id="amount"
+              name="amount"
+              type="number"
+              min="0.01"
+              step="0.01"
+              value={form.amount}
+              onChange={handleChange}
+              placeholder="0.00"
+              required
+            />
+          </div>
 
-      <div className="form-group">
-        <label htmlFor="date">Date</label>
-        <input
-          id="date"
-          name="date"
-          type="date"
-          value={form.date}
-          onChange={handleChange}
-          required
-        />
-      </div>
+          <div className="field">
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+            >
+              {CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
 
-      <button type="submit" className="btn-submit">Add Expense</button>
-    </form>
+          <div className="field">
+            <label htmlFor="date">Date</label>
+            <input
+              id="date"
+              name="date"
+              type="date"
+              value={form.date}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+
+        <button type="submit" className="btn-submit">
+          + Add Expense
+        </button>
+      </form>
+    </div>
   );
 };
 

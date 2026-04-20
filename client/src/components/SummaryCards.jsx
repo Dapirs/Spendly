@@ -7,7 +7,9 @@ const SummaryCards = ({ expenses }) => {
     <div className="summary-cards">
       <div className="summary-card">
         <span className="summary-card__label">Total Spent</span>
-        <span className="summary-card__value">${total.toFixed(2)}</span>
+        <span className="summary-card__value">
+          ₹{total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+        </span>
       </div>
       <div className="summary-card">
         <span className="summary-card__label">Transactions</span>
