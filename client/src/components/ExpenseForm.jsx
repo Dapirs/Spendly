@@ -1,19 +1,48 @@
 import { useState } from 'react';
 
-const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Other'];
-const EMPTY = { description: '', amount: '', category: 'Food', date: '' };
+const EMPTY = { description: '', amount: '', category: '', date: '' };
+const NEW_CATEGORY_SENTINEL = '__new__';
 
-const ExpenseForm = ({ onAdd }) => {
-  const [form, setForm] = useState(EMPTY);
+const ExpenseForm = ({ onAdd, categories, onAddCategory }) => {
+  const [form, setForm] = useState({ ...EMPTY, category: categories[0] ?? '' });
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+
+    if (name === 'category' && value === NEW_CATEGORY_SENTINEL) {
+      setAddingCategory(true);
+      setNewCategoryName('');
+      return;
+    }
+
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleConfirmCategory = async () => {
+    const trimmed = newCategoryName.trim();
+    if (!trimmed) return;
+    await onAddCategory(trimmed);
+    setForm((prev) => ({ ...prev, category: trimmed }));
+    setAddingCategory(false);
+    setNewCategoryName('');
+  };
+
+  const handleCancelCategory = () => {
+    setAddingCategory(false);
+    setNewCategoryName('');
+  };
+
+  const handleNewCategoryKeyDown = (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); handleConfirmCategory(); }
+    if (e.key === 'Escape') handleCancelCategory();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd({ ...form, amount: Number(form.amount) });
-    setForm(EMPTY);
+    setForm({ ...EMPTY, category: categories[0] ?? '' });
   };
 
   return (
@@ -55,16 +84,48 @@ const ExpenseForm = ({ onAdd }) => {
 
           <div className="field">
             <label htmlFor="category">Category</label>
-            <select
-              id="category"
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-            >
-              {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
+            {addingCategory ? (
+              <div className="new-category-inline">
+                <input
+                  autoFocus
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  onKeyDown={handleNewCategoryKeyDown}
+                  placeholder="Category name…"
+                  className="new-category-input"
+                />
+                <button
+                  type="button"
+                  className="btn-confirm-category"
+                  onClick={handleConfirmCategory}
+                  disabled={!newCategoryName.trim()}
+                >
+                  ✓
+                </button>
+                <button
+                  type="button"
+                  className="btn-cancel-category"
+                  onClick={handleCancelCategory}
+                >
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <select
+                id="category"
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                required
+              >
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+                <option disabled>──────────</option>
+                <option value={NEW_CATEGORY_SENTINEL}>+ New Category</option>
+              </select>
+            )}
           </div>
 
           <div className="field">

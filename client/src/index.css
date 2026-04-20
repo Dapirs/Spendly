@@ -7,6 +7,76 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 button { cursor: pointer; font-family: inherit; }
 
+/* ─── New category inline ─────────────────────────────────── */
+.new-category-inline {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 6px 10px 10px;
+  flex: 1;
+}
+
+.new-category-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-mid);
+  outline: none;
+  font-size: 0.9rem;
+  font-family: var(--font-ui);
+  color: var(--text-bright);
+  padding: 2px 6px 4px;
+  min-width: 0;
+  transition: border-color var(--speed) var(--ease);
+}
+
+.new-category-input:focus { border-bottom-color: var(--emerald); }
+.new-category-input::placeholder { color: var(--text-label); }
+
+.btn-confirm-category,
+.btn-cancel-category {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--speed) var(--ease);
+  flex-shrink: 0;
+  margin-left: 4px;
+  align-self: center;
+}
+
+.btn-confirm-category {
+  color: var(--emerald);
+  border-color: var(--emerald-dim);
+}
+
+.btn-confirm-category:hover:not(:disabled) {
+  background: var(--emerald-dim);
+  border-color: var(--emerald);
+}
+
+.btn-confirm-category:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-cancel-category {
+  color: var(--text-label);
+  border-color: var(--border);
+}
+
+.btn-cancel-category:hover {
+  color: var(--red);
+  border-color: var(--red);
+  background: var(--red-dim);
+}
+
+
 /* ─── Tokens ──────────────────────────────────────────────── */
 :root {
   /* Fonts */
