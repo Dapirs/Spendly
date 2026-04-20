@@ -1,15 +1,15 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-/* Matches CSS category palette exactly */
-const CATEGORY_COLORS = {
-  Food:      '#00de7e',
-  Transport: '#38b6ff',
-  Shopping:  '#f5a623',
-  Bills:     '#ff4d6d',
-  Other:     '#9f7aea',
-};
-
-const FALLBACK_COLORS = ['#00de7e', '#38b6ff', '#f5a623', '#ff4d6d', '#9f7aea'];
+const COLOR_PALETTE = [
+  '#10b981',
+  '#f59e0b',
+  '#3b82f6',
+  '#ef4444',
+  '#8b5cf6',
+  '#ec4899',
+  '#14b8a6',
+  '#f97316',
+];
 
 const Chart = ({ filteredExpenses }) => {
   const totals = filteredExpenses.reduce((acc, { category, amount }) => {
@@ -21,6 +21,12 @@ const Chart = ({ filteredExpenses }) => {
     name,
     value: parseFloat(value.toFixed(2)),
   }));
+
+  const uniqueCategories = Object.keys(totals).sort((a, b) => a.localeCompare(b));
+  const categoryColorMap = uniqueCategories.reduce((acc, category, index) => {
+    acc[category] = COLOR_PALETTE[index % COLOR_PALETTE.length];
+    return acc;
+  }, {});
 
   if (data.length === 0) {
     return <p className="empty-state">Add expenses to see the breakdown.</p>;
@@ -39,11 +45,8 @@ const Chart = ({ filteredExpenses }) => {
           dataKey="value"
           strokeWidth={0}
         >
-          {data.map((entry, index) => (
-            <Cell
-              key={entry.name}
-              fill={CATEGORY_COLORS[entry.name] ?? FALLBACK_COLORS[index % FALLBACK_COLORS.length]}
-            />
+          {data.map((entry) => (
+            <Cell key={entry.name} fill={categoryColorMap[entry.name]} />
           ))}
         </Pie>
         <Tooltip

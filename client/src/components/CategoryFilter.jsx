@@ -1,7 +1,7 @@
-const getBarColor = (pct) => {
-  if (pct >= 90) return 'bar--danger';
-  if (pct >= 70) return 'bar--warning';
-  return 'bar--safe';
+const getBarColor = (ratio) => {
+  if (ratio >= 0.9) return '#ef4444';
+  if (ratio >= 0.7) return '#f59e0b';
+  return '#10b981';
 };
 
 const formatINR = (n) =>
@@ -32,10 +32,13 @@ const CategoryFilter = ({
 
       {categories.map((cat) => {
         const budget = budgets[cat];
-        const spent  = spendMap[cat] || 0;
-        const hasBudget = budget != null && budget > 0;
-        const pct    = hasBudget ? Math.min((spent / budget) * 100, 100) : 0;
-        const barCls = hasBudget ? getBarColor(pct) : '';
+        const spent = spendMap[cat] || 0;
+        const spentNum = Number(spent);
+        const budgetNum = Number(budget);
+        const hasBudget = Number.isFinite(budgetNum) && budgetNum > 0;
+        const ratio = hasBudget ? spentNum / budgetNum : 0;
+        const pct = hasBudget ? Math.min(ratio * 100, 100) : 0;
+        const barColor = getBarColor(ratio);
 
         return (
           <div key={cat} className="pill-wrap">
@@ -50,12 +53,12 @@ const CategoryFilter = ({
               <div className="budget-bar-wrap">
                 <div className="budget-bar-track">
                   <div
-                    className={`budget-bar-fill ${barCls}`}
-                    style={{ width: `${pct}%` }}
+                    className="budget-bar-fill"
+                    style={{ width: `${pct}%`, backgroundColor: barColor }}
                   />
                 </div>
                 <span className="budget-bar-label">
-                  {formatINR(spent)} / {formatINR(budget)}
+                  {formatINR(spentNum)} / {formatINR(budgetNum)}
                 </span>
               </div>
             )}
