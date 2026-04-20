@@ -82,6 +82,7 @@ const App = () => {
             onFilterChange={setActiveCategory}
             budgets={budgets}
             onSetBudget={handleSetBudget}
+            expenses={expenses}
           />
           <Chart filteredExpenses={filteredExpenses} />
         </section>
