@@ -1,38 +1,43 @@
-const BASE_URL = 'http://localhost:3001';
+import axios from 'axios';
 
-export const getExpenses = () =>
-  fetch(`${BASE_URL}/expenses`).then((res) => res.json());
+const api = axios.create({
+  baseURL: 'http://localhost:3001',
+});
 
-export const addExpense = (expense) =>
-  fetch(`${BASE_URL}/expenses`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(expense),
-  }).then((res) => res.json());
+// ── Expenses ─────────────────────────────────────────────────
+export const getExpenses = async () => {
+  const { data } = await api.get('/expenses');
+  return data;
+};
 
-export const deleteExpense = (id) =>
-  fetch(`${BASE_URL}/expenses/${id}`, {
-    method: 'DELETE',
-  }).then((res) => res.json());
+export const addExpense = async (expense) => {
+  const { data } = await api.post('/expenses', expense);
+  return data;
+};
+
+export const deleteExpense = async (id) => {
+  const { data } = await api.delete(`/expenses/${id}`);
+  return data;
+};
 
 // ── Categories ────────────────────────────────────────────────
-export const getCategories = () =>
-  fetch(`${BASE_URL}/categories`).then((res) => res.json());
+export const getCategories = async () => {
+  const { data } = await api.get('/categories');
+  return data;
+};
 
-export const addCategory = (name) =>
-  fetch(`${BASE_URL}/categories`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name }),
-  }).then((res) => res.json());
+export const addCategory = async (name) => {
+  const { data } = await api.post('/categories', { name });
+  return data;
+};
 
 // ── Budgets ───────────────────────────────────────────────────
-export const getBudgets = () =>
-  fetch(`${BASE_URL}/budgets`).then((res) => res.json());
+export const getBudgets = async () => {
+  const { data } = await api.get('/budgets');
+  return data;
+};
 
-export const setBudget = (category, amount) =>
-  fetch(`${BASE_URL}/budgets`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ category, amount }),
-  }).then((res) => res.json());
+export const setBudget = async (category, amount) => {
+  const { data } = await api.post('/budgets', { category, amount });
+  return data;
+};

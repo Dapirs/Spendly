@@ -37,8 +37,8 @@ const CategoryFilter = ({
         const budgetNum = Number(budget);
         const hasBudget = Number.isFinite(budgetNum) && budgetNum > 0;
         const ratio = hasBudget ? spentNum / budgetNum : 0;
-        const pct = hasBudget ? Math.min(ratio * 100, 100) : 0;
-        const barColor = getBarColor(ratio);
+        const percent = hasBudget ? Math.min(ratio * 100, 100) : 0;
+        const color = getBarColor(ratio);
 
         return (
           <div key={cat} className="pill-wrap">
@@ -54,7 +54,7 @@ const CategoryFilter = ({
                 <div className="budget-bar-track">
                   <div
                     className="budget-bar-fill"
-                    style={{ width: `${pct}%`, backgroundColor: barColor }}
+                    style={{ width: `${percent}%`, backgroundColor: color }}
                   />
                 </div>
                 <span className="budget-bar-label">

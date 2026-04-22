@@ -84,7 +84,7 @@ const App = () => {
             onSetBudget={handleSetBudget}
             expenses={expenses}
           />
-          <Chart filteredExpenses={filteredExpenses} />
+          <Chart expenses={filteredExpenses} budgets={budgets} />
         </section>
 
         <section className="section">
